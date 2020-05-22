@@ -80,10 +80,15 @@ class ContactData extends Component {
             });
     }
 
-    onChangeHandler = (event) => {
-        const tempFormElement = {...this.state.formElement}
-        tempFormElement.config.value = event.target.value
-        this.setState({tempFormElement})
+    onChangeHandler = (event, inputIdentifier) => {
+        const updatedOrderForm = {...this.state.orderForm}
+        const updatedFormElement = {
+            ...updatedOrderForm[inputIdentifier]
+        }
+
+        updatedFormElement.value = event.target.value
+        updatedOrderForm[inputIdentifier] = updatedFormElement
+        this.setState({orderForm: updatedOrderForm})
     }
 
     render () {
@@ -103,7 +108,7 @@ class ContactData extends Component {
                             elementConfig={formElement.config.elementConfig} 
                             value={formElement.config.value} 
                             key={formElement.id} 
-                            onChange={(event) => this.onChangeHandler(event)} />
+                            changed={(event) => this.onChangeHandler(event, formElement.id)} />
                     ))}
                     
                     <Button btnType="Success" clicked={this.orderHandler}>Order</Button>

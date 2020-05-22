@@ -66,9 +66,15 @@ class ContactData extends Component {
         // Use preventDefault to prevent reloading the page when click submit form button.
         event.preventDefault()
         this.setState({loading: true})
+        const formData = {}
+        for (let fromElementIdentifier in this.state.orderForm) {
+            formData[fromElementIdentifier] = this.state.orderForm[fromElementIdentifier].value
+        }
+
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
+            orderData: formData
         }
         axios.post('/orders.json', order)
             .then(response => {
@@ -101,7 +107,7 @@ class ContactData extends Component {
         }
 
         let form = (
-                <form>
+                <form onSubmit={this.orderHandler}>
                     {formElementsArray.map(formElement => (
                         <Input 
                             elementType={formElement.config.elementType} 
